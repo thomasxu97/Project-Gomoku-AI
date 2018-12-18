@@ -252,8 +252,8 @@ class MinMaxTree:
             node.child.sort(key = lambda s:s.score, reverse=reverse)
             # only choose 10 best places to consider (JOJ has 5s runtime fail)
             # this value should be adjusted..
-            if (len(node.child) > 10):
-                node.child = node.child[0:10]
+            if (len(node.child) > 20):
+                node.child = node.child[0:20]
             node.score = None
             scorelist = []
             for childnode in node.child:
