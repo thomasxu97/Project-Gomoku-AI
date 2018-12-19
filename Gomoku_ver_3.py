@@ -13,7 +13,7 @@ EMPTY = 0
 ME = 1
 OTHER = 2
 
-THRESHOLD = 15
+THRESHOLD = 17
 DEPTH = 4
 
 FREE = 3
@@ -38,7 +38,7 @@ quick_check_table = {
     (FREE,  EMPTY,  EMPTY,  EMPTY,  ME,     EMPTY,  FREE): [[ITW,    ITW,    TWO,    SML,    TWO],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  EMPTY,  EMPTY,  ME,     ME,     FREE): [[DTH,    ITH,    THR,    SML,    SML],  [0,  1,  1,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  EMPTY,  ME,     EMPTY,  EMPTY,  FREE): [[ITW,    TWO,    SML,    TWO,    ITW],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
-    (FREE,  EMPTY,  EMPTY,  ME,     EMPTY,  ME,     FREE): [[DTH,    THR,    SML,    THR,    SML],  [0,  1,  0,  1,  0], [0,  0,  0,  0,  0]],
+    (FREE,  EMPTY,  EMPTY,  ME,     EMPTY,  ME,     FREE): [[DTH,    ITH,    SML,    THR,    SML],  [0,  1,  0,  1,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  EMPTY,  ME,     ME,     EMPTY,  FREE): [[ITH,    THR,    SML,    SML,    THR],  [1,  1,  0,  0,  1], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  EMPTY,  ME,     ME,     ME,     FREE): [[DEX,    FOU,    SML,    SML,    SML],  [0,  0,  0,  0,  0], [1,  1,  0,  0,  0]],
     (FREE,  EMPTY,  ME,     EMPTY,  EMPTY,  EMPTY,  FREE): [[TWO,    SML,    TWO,    ITW,    ITW],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
@@ -53,7 +53,7 @@ quick_check_table = {
     (FREE,  ME,     EMPTY,  EMPTY,  EMPTY,  ME,     FREE): [[SML,    DTH,    DTH,    DTH,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  ME,     EMPTY,  EMPTY,  ME,     EMPTY,  FREE): [[SML,    ITH,    ITH,    SML,    DTH],  [0,  1,  1,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  ME,     EMPTY,  EMPTY,  ME,     ME,     FREE): [[SML,    DFO,    DEX,    SML,    SML],  [0,  0,  0,  0,  0], [0,  1,  1,  0,  0]],
-    (FREE,  ME,     EMPTY,  ME,     EMPTY,  EMPTY,  FREE): [[SML,    THR,    SML,    ITH,    DFO],  [0,  1,  1,  0,  0], [0,  0,  0,  0,  0]],
+    (FREE,  ME,     EMPTY,  ME,     EMPTY,  EMPTY,  FREE): [[SML,    THR,    SML,    ITH,    DTH],  [0,  1,  1,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  ME,     EMPTY,  ME,     EMPTY,  ME,     FREE): [[SML,    DEX,    SML,    DEX,    SML],  [0,  0,  0,  0,  0], [0,  1,  0,  1,  0]],
     (FREE,  ME,     EMPTY,  ME,     ME,     EMPTY,  FREE): [[SML,    FOU,    SML,    SML,    DEX],  [0,  0,  0,  0,  0], [0,  1,  0,  0,  1]],
     (FREE,  ME,     EMPTY,  ME,     ME,     ME,     FREE): [[SML,    FIV,    SML,    SML,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
@@ -74,7 +74,7 @@ quick_check_table = {
     (NFREE, EMPTY,  EMPTY,  ME,     EMPTY,  ME,     FREE): [[DTH,    ITH,    SML,    THR,    SML],  [0,  1,  0,  1,  0], [0,  0,  0,  0,  0]],
     (NFREE, EMPTY,  EMPTY,  ME,     ME,     EMPTY,  FREE): [[DTH,    ITH,    SML,    SML,    THR],  [0,  1,  0,  0,  1], [0,  0,  0,  0,  0]],
     (NFREE, EMPTY,  EMPTY,  ME,     ME,     ME,     FREE): [[DEX,    FOU,    SML,    SML,    SML],  [0,  0,  0,  0,  0], [1,  1,  0,  0,  0]],
-    (NFREE, EMPTY,  ME,     EMPTY,  EMPTY,  EMPTY,  FREE): [[0,      SML,    ITH,    ITH,    ITH],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
+    (NFREE, EMPTY,  ME,     EMPTY,  EMPTY,  EMPTY,  FREE): [[0,      SML,    ITW,    ITW,    ITW],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (NFREE, EMPTY,  ME,     EMPTY,  EMPTY,  ME,     FREE): [[DTH,    SML,    ITH,    ITH,    SML],  [0,  0,  1,  1,  0], [0,  0,  0,  0,  0]],
     (NFREE, EMPTY,  ME,     EMPTY,  ME,     EMPTY,  FREE): [[DTH,    SML,    ITH,    SML,    ITH],  [0,  0,  1,  0,  1], [0,  0,  0,  0,  0]],
     (NFREE, EMPTY,  ME,     EMPTY,  ME,     ME,     FREE): [[DFO,    SML,    FOU,    SML,    SML],  [0,  0,  0,  0,  0], [1,  0,  1,  0,  0]],
@@ -107,23 +107,23 @@ quick_check_table = {
     (FREE,  EMPTY,  EMPTY,  ME,     EMPTY,  ME,    NFREE): [[DTH,    DTH,    SML,    DTH,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  EMPTY,  ME,     ME,     EMPTY, NFREE): [[ITH,    ITH,    SML,    SML,    DTH],  [1,  1,  0,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  EMPTY,  ME,     ME,     ME,    NFREE): [[DFO,    DFO,    SML,    SML,    SML],  [0,  0,  0,  0,  0], [1,  1,  0,  0,  0]],
-    (FREE,  EMPTY,  ME,     EMPTY,  EMPTY,  EMPTY, NFREE): [[ITW,    SML,    ITW,    ITW,    0],    [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
+    (FREE,  EMPTY,  ME,     EMPTY,  EMPTY,  EMPTY, NFREE): [[TWO,    SML,    TWO,    ITW,    0],    [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  ME,     EMPTY,  EMPTY,  ME,    NFREE): [[DTH,    SML,    DTH,    DTH,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  ME,     EMPTY,  ME,     EMPTY, NFREE): [[ITH,    SML,    ITH,    SML,    DTH],  [1,  0,  1,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  ME,     EMPTY,  ME,     ME,    NFREE): [[DFO,    SML,    DFO,    SML,    SML],  [0,  0,  0,  0,  0], [1,  0,  1,  0,  0]],
-    (FREE,  EMPTY,  ME,     ME,     EMPTY,  EMPTY, NFREE): [[THR,    SML,    SML,    ITH,    0],    [1,  0,  0,  1,  0], [0,  0,  0,  0,  0]],
+    (FREE,  EMPTY,  ME,     ME,     EMPTY,  EMPTY, NFREE): [[THR,    SML,    SML,    ITH,    DTH],  [1,  0,  0,  1,  0], [0,  0,  0,  0,  0]],
     (FREE,  EMPTY,  ME,     ME,     EMPTY,  ME,    NFREE): [[DEX,    SML,    SML,    DFO,    SML],  [0,  0,  0,  0,  0], [1,  0,  0,  1,  0]],
     (FREE,  EMPTY,  ME,     ME,     ME,     EMPTY, NFREE): [[FOU,    SML,    SML,    SML,    DFO],  [0,  0,  0,  0,  0], [1,  0,  0,  0,  1]],
     (FREE,  EMPTY,  ME,     ME,     ME,     ME,    NFREE): [[FIV,    SML,    SML,    SML,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  ME,     EMPTY,  EMPTY,  EMPTY,  EMPTY, NFREE): [[SML,    TWO,    ITW,    ITW,    0],    [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
-    (FREE,  ME,     EMPTY,  EMPTY,  EMPTY,  ME,    NFREE): [[SML,    TWO,    TWO,    TWO,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
+    (FREE,  ME,     EMPTY,  EMPTY,  EMPTY,  ME,    NFREE): [[SML,    DTH,    DTH,    DTH,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (FREE,  ME,     EMPTY,  EMPTY,  ME,     EMPTY, NFREE): [[SML,    ITH,    ITH,    SML,    DTH],  [0,  1,  1,  0,  0], [0,  0,  0,  0,  0]],
-    (FREE,  ME,     EMPTY,  EMPTY,  ME,     ME,    NFREE): [[SML,    DFO,    DEX,    SML,    SML],  [0,  0,  0,  0,  0], [0,  1,  1,  0,  0]],
-    (FREE,  ME,     EMPTY,  ME,     EMPTY,  EMPTY, NFREE): [[SML,    THR,    SML,    ITH,    DTH],   [0,  1,  0,  1,  0], [0,  0,  0,  0,  0]],
+    (FREE,  ME,     EMPTY,  EMPTY,  ME,     ME,    NFREE): [[SML,    DFO,    DFO,    SML,    SML],  [0,  0,  0,  0,  0], [0,  1,  1,  0,  0]],
+    (FREE,  ME,     EMPTY,  ME,     EMPTY,  EMPTY, NFREE): [[SML,    THR,    SML,    ITH,    DTH],  [0,  1,  0,  1,  0], [0,  0,  0,  0,  0]],
     (FREE,  ME,     EMPTY,  ME,     EMPTY,  ME,    NFREE): [[SML,    DEX,    SML,    DFO,    SML],  [0,  0,  0,  0,  0], [0,  1,  0,  1,  0]],
     (FREE,  ME,     EMPTY,  ME,     ME,     EMPTY, NFREE): [[SML,    FOU,    SML,    SML,    DFO],  [0,  0,  0,  0,  0], [0,  1,  0,  0,  1]],
     (FREE,  ME,     EMPTY,  ME,     ME,     ME,    NFREE): [[SML,    FIV,    SML,    SML,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
-    (FREE,  ME,     ME,     EMPTY,  EMPTY,  EMPTY, NFREE): [[SML,    SML,    THR,    ITH,    DTH],   [0,  0,  1,  1,  0], [0,  0,  0,  0,  0]],
+    (FREE,  ME,     ME,     EMPTY,  EMPTY,  EMPTY, NFREE): [[SML,    SML,    THR,    ITH,    DTH],  [0,  0,  1,  1,  0], [0,  0,  0,  0,  0]],
     (FREE,  ME,     ME,     EMPTY,  EMPTY,  ME,    NFREE): [[SML,    SML,    DEX,    DFO,    SML],  [0,  0,  0,  0,  0], [0,  0,  1,  1,  0]],
     (FREE,  ME,     ME,     EMPTY,  ME,     EMPTY, NFREE): [[SML,    SML,    FOU,    SML,    DFO],  [0,  0,  0,  0,  0], [0,  0,  1,  0,  1]],
     (FREE,  ME,     ME,     EMPTY,  ME,     ME,    NFREE): [[SML,    SML,    FIV,    SML,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
@@ -482,29 +482,27 @@ class BoardScore:
                             self.myBoardScoreTotal[i][j] -= 1000
 
 
-    def getPossiblePosition(self, player, countZero):
+    def getPossiblePosition(self, player):
         possible = []
         if player == ME:
             for i in range(BOARD_SIZE):
                 for j in range(BOARD_SIZE):
-                    if not countZero:
-                        if self.myBoardScoreTotal[i][j] > 0:
-                            possible.append([[i, j], self.myBoardScoreTotal[i][j]])
-                    else:
-                        if self.myBoardScoreTotal[i][j] == 0:
-                            possible.append([[i, j], self.myBoardScoreTotal[i][j]])
+                    if self.myBoardScoreTotal[i][j] > 0:
+                        possible.append([[i, j], self.myBoardScoreTotal[i][j]])
         else:
             for i in range(BOARD_SIZE):
                 for j in range(BOARD_SIZE):
-                    if not countZero:
-                        if self.opponentBoardScoreTotal[i][j] > 0:
-                            possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
-                    else:
-                        if self.opponentBoardScoreTotal[i][j] == 0:
+                    if self.opponentBoardScoreTotal[i][j] > 0:
+                        possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
+        if len(possible) == 0:
+            for i in range(BOARD_SIZE):
+                for j in range(BOARD_SIZE):
+                    if self.board[i][j] == EMPTY:
+                        if player == ME:
+                            possible.append([[i, j], self.myBoardScoreTotal[i][j]])
+                        else:
                             possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
         # sorting makes alpha-beta cutting more efficient
-        if len(possible) == 0:
-            return self.getPossiblePosition(player, True)
         possible.sort(key = lambda s:s[1], reverse = True)
         return possible[0: THRESHOLD]
 
@@ -569,12 +567,12 @@ class MinMaxTree:
         if height < DEPTH:
             if (height % 2 == 1):
                 boardScore.boardScoreUpdate(ME, place)
-                possible = boardScore.getPossiblePosition(OTHER, False)
+                possible = boardScore.getPossiblePosition(OTHER)
                 for position, change in possible:
                     self.insert(node, position, -change)
             else:
                 boardScore.boardScoreUpdate(OTHER, place)
-                possible = boardScore.getPossiblePosition(ME, False)
+                possible = boardScore.getPossiblePosition(ME)
                 for position, change in possible:
                     self.insert(node, position, change)
             node.score = None
@@ -659,7 +657,12 @@ class AI:
         #self.boardScore.debugPrintAll()
         self.tree.reconstruct()
         self.tree.root.score = self.score
-        possible = self.boardScore.getPossiblePosition(ME, False)
+        possible = self.boardScore.getPossiblePosition(ME)
+        if self.hand >= 109 or self.hand <= 1:
+            self.hand += 1
+            self.boardScore.boardScoreUpdate(ME, possible[0][0])
+            self.boardScore.history = []
+            return possible[0][0]
         for position, change in possible:
             self.tree.insert(self.tree.root, position, change)
         for child in self.tree.root.child:
