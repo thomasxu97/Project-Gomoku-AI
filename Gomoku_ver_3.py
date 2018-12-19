@@ -12,8 +12,8 @@ EMPTY = 0
 ME = 1
 OTHER = 2
 
-THRESHOLD = 17
-DEPTH = 4
+THRESHOLD = 10
+DEPTH = 6
 
 FREE = 3
 NFREE = 4
@@ -567,6 +567,11 @@ class MinMaxTree:
             if (height % 2 == 1):
                 boardScore.boardScoreUpdate(ME, place)
                 possible = boardScore.getPossiblePosition(OTHER)
+                if height == DEPTH - 1:
+                    node.score -= possible[0][1]
+                    boardScore.backspace()
+                    boardScore.board[place[0]][place[1]] = EMPTY
+                    return
                 for position, change in possible:
                     self.insert(node, position, -change)
             else:
