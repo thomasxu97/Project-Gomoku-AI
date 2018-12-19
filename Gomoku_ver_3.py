@@ -659,6 +659,8 @@ class AI:
         self.tree.reconstruct()
         self.tree.root.score = self.score
         possible = self.boardScore.getPossiblePosition(ME, False)
+        if self.hand >= 109:
+            return possible[0]
         for position, change in possible:
             self.tree.insert(self.tree.root, position, change)
         for child in self.tree.root.child:
