@@ -1,4 +1,4 @@
-from Gomoku_ver_3 import *
+from Gomoku_ver_4 import *
 import numpy as np
 import time
 
