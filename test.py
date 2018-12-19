@@ -1,4 +1,5 @@
-import Gomoku_ver_3
+from Gomoku_ver_3 import *
+import numpy as np
 
 def debugprintboard(board):
     print("    ", end = '')
