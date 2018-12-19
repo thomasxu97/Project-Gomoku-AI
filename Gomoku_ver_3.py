@@ -481,21 +481,31 @@ class BoardScore:
                             self.myBoardScoreTotal[i][j] -= 1000
 
 
-    def getPossiblePosition(self, player, threshold):
+    def getPossiblePosition(self, player, countZero):
         possible = []
         if player == ME:
             for i in range(BOARD_SIZE):
                 for j in range(BOARD_SIZE):
-                    if self.myBoardScoreTotal[i][j] > 0:
-                        possible.append([[i, j], self.myBoardScoreTotal[i][j]])
+                    if not countZero:
+                        if self.myBoardScoreTotal[i][j] > 0:
+                            possible.append([[i, j], self.myBoardScoreTotal[i][j]])
+                    else:
+                        if self.myBoardScoreTotal[i][j] == 0:
+                            possible.append([[i, j], self.myBoardScoreTotal[i][j]])
         else:
             for i in range(BOARD_SIZE):
                 for j in range(BOARD_SIZE):
-                    if self.opponentBoardScoreTotal[i][j] > 0:
-                        possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
+                    if not countZero:
+                        if self.opponentBoardScoreTotal[i][j] > 0:
+                            possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
+                    else:
+                        if self.opponentBoardScoreTotal[i][j] == 0:
+                            possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
         # sorting makes alpha-beta cutting more efficient
+        if len(possible) == 0:
+            return self.getPossiblePosition(player, THRESHOLD, True)
         possible.sort(key = lambda s:s[1], reverse = True)
-        return possible[0: threshold]
+        return possible[0: THRESHOLD]
 
     def backspace(self):
         if self.history == []:
@@ -558,12 +568,12 @@ class MinMaxTree:
         if height < DEPTH:
             if (height % 2 == 1):
                 boardScore.boardScoreUpdate(ME, place)
-                possible = boardScore.getPossiblePosition(OTHER, THRESHOLD)
+                possible = boardScore.getPossiblePosition(OTHER, False)
                 for position, change in possible:
                     self.insert(node, position, -change)
             else:
                 boardScore.boardScoreUpdate(OTHER, place)
-                possible = boardScore.getPossiblePosition(ME, THRESHOLD)
+                possible = boardScore.getPossiblePosition(ME, False)
                 for position, change in possible:
                     self.insert(node, position, change)
             node.score = None
@@ -622,7 +632,6 @@ class AI:
         self.ban = ME
         self.hand = 0
         self.score = 0
-        self.threshold = THRESHOLD
 
     def init(self):
         # TODO: add your own initilization here if you need any
@@ -646,16 +655,10 @@ class AI:
 
         if self.hand == 0:
             self.boardScore.boardScoreInitialization(self.board, self.ban)
-        if self.hand > 150:
-            self.threshold = 8
-        elif self.hand > 120:
-            self.threshold = 10
-        elif self.hand > 80:
-            self.threshold = 12
         #self.boardScore.debugPrintAll()
         self.tree.reconstruct()
         self.tree.root.score = self.score
-        possible = self.boardScore.getPossiblePosition(ME, self.threshold)
+        possible = self.boardScore.getPossiblePosition(ME, False)
         for position, change in possible:
             self.tree.insert(self.tree.root, position, change)
         for child in self.tree.root.child:
@@ -671,74 +674,41 @@ class AI:
         for i in range(0,BOARD_SIZE):
             print(self.board[i])
 
-def debugprintboard(board):
-    print("    ", end = '')
-    for i in range(BOARD_SIZE):
-        print("%-3d"%(i), end = '')
-    print("")
-    for i in range(BOARD_SIZE):
-        print("%-3d"%(i), end = '')
-        for j in range(BOARD_SIZE):
-            if (board[i][j] == ME):
-                print(" * ", end = '')
-            elif (board[i][j] == OTHER):
-                print(" # ", end = '')
-            else:
-                print("   ", end = '')
-        print("")
+def loop(AI):
+    # NOTE: don't change this function
+    while True:
+        buffer = input()
+        buffersplitted = buffer.split(' ');
+        if len(buffersplitted) == 0:
+            continue
+        command = buffersplitted[0]
+        if command == START:
+            AI.init();
+        elif command == PLACE:
+            x = int(buffersplitted[1])
+            y = int(buffersplitted[2])
+            v = int(buffersplitted[3])
+            AI.board[x][y] = v
+        elif command == DONE:
+            print("OK")
+        elif command == BEGIN:
+            x, y = AI.begin()
+            AI.board[x][y] = ME
+            print(str(x)+" "+str(y))
+        elif command == TURN:
+            x = int(buffersplitted[1])
+            y = int(buffersplitted[2])
+            AI.board[x][y] = OTHER
+            AI.boardScore.boardScoreUpdate(OTHER, [x, y])
+            x, y = AI.turn()
+            AI.board[x][y] = ME
+            print(str(x)+" "+str(y))
+        elif command == "print":
+           AI.display()
+        elif command == END:
+            break
 
-ai = AI()
-'''
-B = [
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 2, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-]
-
-ai.boardScore.boardScoreInitialization(B, 1)
-ai.board = B
-ai.boardScore.debugPrintAll()
-ai.ban = ME
-AIFirst = False
-ai.hand = 1
-'''
-
-while True:
-    '''
-    if (AIFirst):
-        place = ai.turn()
-        ai.board[place[0]][place[1]] = ME
-        print("-----------------------------------------------")
-        AIFirst = False
-    '''
-
-    debugprintboard(ai.board)
-    row = input("Please input #row:")
-    if row == "print":
-        ai.boardScore.debugPrintAll()
-        debugprintboard(ai.board)
-        row = input("Please input #row:")
-    row = int(row)
-    col = int(input("Please input #col:"))
-    
-
-    ai.board[row][col] = OTHER
-    ai.boardScore.boardScoreUpdate(OTHER, [row, col])
-    debugprintboard(ai.board)
-    place = ai.turn()
-    ai.board[place[0]][place[1]] = ME
-    print("-----------------------------------------------")
-
-
+if __name__ == "__main__":
+    # NOTE: don't change main function
+    ai = AI()
+    loop(ai)
