@@ -462,7 +462,7 @@ class BoardScore:
             self.shapeScoreUpdate(right, direction, opponent, pos3)
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE):
-                if self.myBoardScoreTotal[i][j] == None:
+                if np.isnan(self.myBoardScoreTotal[i][j]):
                     self.myBoardScoreTotal[i][j] = self.myBoardScore[0][i][j] + self.myBoardScore[1][i][j] + self.myBoardScore[2][i][j] + self.myBoardScore[3][i][j]
                     self.opponentBoardScoreTotal[i][j] = self.opponentBoardScore[0][i][j] + self.opponentBoardScore[1][i][j] + self.opponentBoardScore[2][i][j] + self.opponentBoardScore[3][i][j]
                     myThree = self.myThree[0][i][j] + self.myThree[1][i][j] + self.myThree[2][i][j] + self.myThree[3][i][j]
