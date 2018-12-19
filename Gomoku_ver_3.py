@@ -389,24 +389,25 @@ class BoardScore:
             self.opponentFour[direction][updatePos[0]][updatePos[1]] = 0
 
     def shapeScoreUpdate(self, shape, direction, player, startPos):
-        if (len(shape) < 5):
+        len_shape = len(shape)
+        if (len_shape < 5):
             return
-        record = [-float("Inf")] * len(shape)
-        recordThree = [0] * len(shape)
-        recordFour = [0] * len(shape)
+        record = [-float("Inf")] * len_shape
+        recordThree = [0] * len_shape
+        recordFour = [0] * len_shape
         if player != ME:
-            for i in range(len(shape)):
+            for i in range(len_shape):
                 if shape[i] == OTHER:
                     shape[i] = ME
                 elif shape[i] == ME:
                     shape[i] = OTHER
-        for i in range(len(shape)-4):
+        for i in range(len_shape-4):
             tup = tuple(shape[i:i+5])
             if i == 0:
                 tup = (NFREE,) + tup
             else:
                 tup = (FREE,) + tup
-            if i == len(shape) - 5:
+            if i == len_shape - 5:
                 tup = tup + (NFREE,)
             else:
                 tup = tup + (FREE,)
@@ -419,7 +420,7 @@ class BoardScore:
                 if (result[2][j] == 1):
                     recordThree[i+j] = 0
                     recordFour[i+j] = 1
-        for i in range(len(shape)):
+        for i in range(len_shape):
             updatePos = self.next(startPos, direction, -i)
             if player == ME:
                 self.myBoardScore[direction][updatePos[0]][updatePos[1]] += record[i]
