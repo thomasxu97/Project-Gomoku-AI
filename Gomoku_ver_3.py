@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import numpy as np
 
 START = "START"
 PLACE = "PLACE"
@@ -168,21 +169,21 @@ quick_check_table = {
 class BoardScore:
     def __init__(self):
         self.ban = None
-        self.board = [[EMPTY for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
+        self.board = np.zeros((BOARD_SIZE, BOARD_SIZE))
         # 0: score on - 
         # 1: score on \ 
         # 2: score on |
         # 3: score on /
-        self.myBoardScore = [[[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)] for k in range(4)]
-        self.opponentBoardScore = [[[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)] for k in range(4)]
+        self.myBoardScore = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
+        self.opponentBoardScore = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
         # 
-        self.myThree = [[[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)] for k in range(4)]
-        self.myFour = [[[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)] for k in range(4)]
-        self.opponentThree = [[[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)] for k in range(4)]
-        self.opponentFour = [[[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)] for k in range(4)]
+        self.myThree = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
+        self.myFour = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
+        self.opponentThree = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
+        self.opponentFour = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
         # total 
-        self.myBoardScoreTotal = [[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
-        self.opponentBoardScoreTotal = [[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
+        self.myBoardScoreTotal = np.zeros((BOARD_SIZE, BOARD_SIZE))
+        self.opponentBoardScoreTotal = np.zeros((BOARD_SIZE, BOARD_SIZE))
         self.history = []
 
     def debugPrintAll(self):
