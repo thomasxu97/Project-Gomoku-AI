@@ -1,5 +1,6 @@
 from Gomoku_ver_3 import *
 import numpy as np
+import time
 
 def debugprintboard(board):
     print("    ", end = '')
@@ -18,27 +19,28 @@ def debugprintboard(board):
         print("")
 
 ai = AI()
-'''
-B = [
-[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,1,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,2,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,2,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
 
+B = np.zeros((BOARD_SIZE, BOARD_SIZE))
+B[6][7] = ME
+B[5][8] = OTHER
+B[7][7] = OTHER
 
 ai.boardScore.boardScoreInitialization(B, 1)
 ai.board = B
-ai.boardScore.debugPrintAll()
-ai.ban = ME
+# ai.boardScore.debugPrintAll()
+ai.ban = OTHER
 AIFirst = True
 ai.hand = 1
-'''
+
 p = False
 while True:
-    '''
+
     if (AIFirst):
         place = ai.turn()
         ai.board[place[0]][place[1]] = ME
         print("-----------------------------------------------")
         AIFirst = False
-    '''
+
 
     debugprintboard(ai.board)
     row = input("Please input #row:")
@@ -54,11 +56,14 @@ while True:
     ai.board[row][col] = OTHER
     ai.boardScore.boardScoreUpdate(OTHER, [row, col])
     if p:
-        ai.boardScore.debugPrintAll()
+        # ai.boardScore.debugPrintAll()
         p = False
     debugprintboard(ai.board)
+    t0 = time.time()
     place = ai.turn()
+    t1 = time.time()
     print(place)
+    print("Taking time: " + str((t1-t0) * 1000))
     ai.board[place[0]][place[1]] = ME
     print("-----------------------------------------------")
 
