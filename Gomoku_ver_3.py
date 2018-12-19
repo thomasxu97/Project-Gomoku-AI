@@ -504,7 +504,7 @@ class BoardScore:
                             possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
         # sorting makes alpha-beta cutting more efficient
         if len(possible) == 0:
-            return self.getPossiblePosition(player, THRESHOLD, True)
+            return self.getPossiblePosition(player, True)
         possible.sort(key = lambda s:s[1], reverse = True)
         return possible[0: THRESHOLD]
 
