@@ -174,13 +174,13 @@ class BoardScore:
         # 1: score on \ 
         # 2: score on |
         # 3: score on /
-        self.myBoardScore = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
-        self.opponentBoardScore = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
+        self.myBoardScore = np.zeros((4, BOARD_SIZE, BOARD_SIZE))
+        self.opponentBoardScore = np.zeros((4, BOARD_SIZE, BOARD_SIZE))
         # 
-        self.myThree = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
-        self.myFour = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
-        self.opponentThree = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
-        self.opponentFour = np.zeros((BOARD_SIZE, BOARD_SIZE, 4))
+        self.myThree = np.zeros((4, BOARD_SIZE, BOARD_SIZE))
+        self.myFour = np.zeros((4, BOARD_SIZE, BOARD_SIZE))
+        self.opponentThree = np.zeros((4, BOARD_SIZE, BOARD_SIZE))
+        self.opponentFour = np.zeros((4, BOARD_SIZE, BOARD_SIZE))
         # total 
         self.myBoardScoreTotal = np.zeros((BOARD_SIZE, BOARD_SIZE))
         self.opponentBoardScoreTotal = np.zeros((BOARD_SIZE, BOARD_SIZE))
