@@ -12,7 +12,7 @@ EMPTY = 0
 ME = 1
 OTHER = 2
 
-THRESHOLD = 10
+THRESHOLD = 12
 DEPTH = 6
 
 FREE = 3
@@ -28,6 +28,9 @@ ITH = 90            # ill shape three O_OO OO_O = 90
 DTH = 10            # dead three = 10
 DFO = 80            # dead four  = 80
 DEX = 90            # dead four with extra hand = 100
+
+NUM_STEPS = 0
+NUM_STEPS_THRESHOLD = 50000
 
 quick_check_table = {
     # store shape score if ME play at EMPTY
@@ -164,6 +167,10 @@ quick_check_table = {
     (NFREE, ME,     ME,     ME,     ME,     EMPTY, NFREE): [[SML,    SML,    SML,    SML,    FIV],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
     (NFREE, ME,     ME,     ME,     ME,     ME,    NFREE): [[SML,    SML,    SML,    SML,    SML],  [0,  0,  0,  0,  0], [0,  0,  0,  0,  0]],
 }
+
+def dynamicThreshold(depth):
+    return max(THRESHOLD - 2 * depth, 1)
+
 
 class BoardScore:
     def __init__(self):
@@ -482,7 +489,7 @@ class BoardScore:
                             self.myBoardScoreTotal[i][j] -= 1000
 
 
-    def getPossiblePosition(self, player):
+    def getPossiblePosition(self, player, depth):
         possible = []
         if player == ME:
             for i in range(BOARD_SIZE):
@@ -504,9 +511,11 @@ class BoardScore:
                             possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
         # sorting makes alpha-beta cutting more efficient
         possible.sort(key = lambda s:s[1], reverse = True)
-        return possible[0: THRESHOLD]
+        return possible[0: dynamicThreshold(depth)]
 
     def backspace(self):
+        #global NUM_STEPS
+        #NUM_STEPS += 1
         if self.history == []:
             return
         dic = self.history.pop()
@@ -567,7 +576,7 @@ class MinMaxTree:
         if height < DEPTH:
             if (height % 2 == 1):
                 boardScore.boardScoreUpdate(ME, place)
-                possible = boardScore.getPossiblePosition(OTHER)
+                possible = boardScore.getPossiblePosition(OTHER, height)
                 if height == DEPTH - 1:
                     node.score -= possible[0][1]
                     boardScore.backspace()
@@ -577,9 +586,13 @@ class MinMaxTree:
                     self.insert(node, position, -change)
             else:
                 boardScore.boardScoreUpdate(OTHER, place)
-                possible = boardScore.getPossiblePosition(ME)
+                possible = boardScore.getPossiblePosition(ME, height)
                 for position, change in possible:
                     self.insert(node, position, change)
+            #if NUM_STEPS > NUM_STEPS_THRESHOLD:
+            #    boardScore.backspace()
+            #    boardScore.board[place[0]][place[1]] = EMPTY
+            #    return
             node.score = None
             scorelist = []
             for childnode in node.child:
@@ -656,13 +669,14 @@ class AI:
         # TODO: write your in-turn operation here
         # NOTE: this method is called when it's your turn to put chess
         # RETURN: two integer represent the axis of target position
-
+        #global NUM_STEPS
+        #NUM_STEPS = 0
         if self.hand == 0:
             self.boardScore.boardScoreInitialization(self.board, self.ban)
         #self.boardScore.debugPrintAll()
         self.tree.reconstruct()
         self.tree.root.score = self.score
-        possible = self.boardScore.getPossiblePosition(ME)
+        possible = self.boardScore.getPossiblePosition(ME, 0)
         if self.hand >= 109 or self.hand <= 1:
             self.hand += 1
             self.boardScore.boardScoreUpdate(ME, possible[0][0])
@@ -675,6 +689,7 @@ class AI:
         self.hand += 1
         self.boardScore.boardScoreUpdate(ME, self.tree.choice())
         self.boardScore.history = []
+        #print("# of move: " + str(NUM_STEPS))
         return self.tree.choice()
 
     @classmethod
