@@ -12,7 +12,7 @@ EMPTY = 0
 ME = 1
 OTHER = 2
 
-THRESHOLD = 12
+THRESHOLD = 10
 DEPTH = 6
 
 FREE = 3
@@ -30,7 +30,7 @@ DFO = 80            # dead four  = 80
 DEX = 90            # dead four with extra hand = 100
 
 NUM_STEPS = 0
-NUM_STEPS_THRESHOLD = 50000
+NUM_STEPS_THRESHOLD = 2400
 
 quick_check_table = {
     # store shape score if ME play at EMPTY
@@ -169,7 +169,7 @@ quick_check_table = {
 }
 
 def dynamicThreshold(depth):
-    return max(THRESHOLD - 2 * depth, 1)
+    return max(THRESHOLD - depth, 1)
 
 
 class BoardScore:
@@ -511,11 +511,15 @@ class BoardScore:
                             possible.append([[i, j], self.opponentBoardScoreTotal[i][j]])
         # sorting makes alpha-beta cutting more efficient
         possible.sort(key = lambda s:s[1], reverse = True)
+        for i in range(len(possible)):
+            if possible[i][1] < possible[0][1]/10:
+                possible = possible[0:i]
+                break
         return possible[0: dynamicThreshold(depth)]
 
     def backspace(self):
-        #global NUM_STEPS
-        #NUM_STEPS += 1
+        global NUM_STEPS
+        NUM_STEPS += 1
         if self.history == []:
             return
         dic = self.history.pop()
@@ -581,7 +585,7 @@ class MinMaxTree:
                     node.score -= possible[0][1]
                     boardScore.backspace()
                     boardScore.board[place[0]][place[1]] = EMPTY
-                    return
+                    return False
                 for position, change in possible:
                     self.insert(node, position, -change)
             else:
@@ -589,15 +593,19 @@ class MinMaxTree:
                 possible = boardScore.getPossiblePosition(ME, height)
                 for position, change in possible:
                     self.insert(node, position, change)
-            #if NUM_STEPS > NUM_STEPS_THRESHOLD:
-            #    boardScore.backspace()
-            #    boardScore.board[place[0]][place[1]] = EMPTY
-            #    return
+            if NUM_STEPS > NUM_STEPS_THRESHOLD:
+                boardScore.backspace()
+                boardScore.board[place[0]][place[1]] = EMPTY
+                return True
             node.score = None
             scorelist = []
             for childnode in node.child:
                 alpha = node.parent.alpha
-                self.deepsearch(childnode, boardScore)
+                broken = self.deepsearch(childnode, boardScore)
+                if broken:
+                    boardScore.backspace()
+                    boardScore.board[place[0]][place[1]] = EMPTY
+                    return True
                 if (node.height%2 == 1):
                     # opponent choose
                     if (childnode.score < alpha):
@@ -626,6 +634,7 @@ class MinMaxTree:
             # set board back to origianl status
             boardScore.backspace()
             boardScore.board[place[0]][place[1]] = EMPTY
+            return False
 
     def choice(self):
         # select best child of root and return its position
@@ -669,15 +678,15 @@ class AI:
         # TODO: write your in-turn operation here
         # NOTE: this method is called when it's your turn to put chess
         # RETURN: two integer represent the axis of target position
-        #global NUM_STEPS
-        #NUM_STEPS = 0
+        global NUM_STEPS
+        NUM_STEPS = 0
         if self.hand == 0:
             self.boardScore.boardScoreInitialization(self.board, self.ban)
         #self.boardScore.debugPrintAll()
         self.tree.reconstruct()
         self.tree.root.score = self.score
         possible = self.boardScore.getPossiblePosition(ME, 0)
-        if self.hand >= 109 or self.hand <= 1:
+        if self.hand >= 107 or self.hand <= 1:
             self.hand += 1
             self.boardScore.boardScoreUpdate(ME, possible[0][0])
             self.boardScore.history = []
@@ -685,7 +694,9 @@ class AI:
         for position, change in possible:
             self.tree.insert(self.tree.root, position, change)
         for child in self.tree.root.child:
-            self.tree.deepsearch(child, self.boardScore)
+            broken = self.tree.deepsearch(child, self.boardScore)
+            if broken:
+                child.score = -float("Inf")
         self.hand += 1
         self.boardScore.boardScoreUpdate(ME, self.tree.choice())
         self.boardScore.history = []

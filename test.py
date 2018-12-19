@@ -21,15 +21,15 @@ def debugprintboard(board):
 ai = AI()
 
 B = np.zeros((BOARD_SIZE, BOARD_SIZE))
-B[6][7] = ME
-B[5][8] = OTHER
-B[7][7] = OTHER
+B[7][7] = ME
+B[7][9] = ME
+B[6][7] = OTHER
 
 ai.boardScore.boardScoreInitialization(B, 1)
 ai.board = B
 # ai.boardScore.debugPrintAll()
-ai.ban = OTHER
-AIFirst = True
+ai.ban = ME
+AIFirst = False
 ai.hand = 1
 
 p = False
