@@ -21,15 +21,15 @@ def debugprintboard(board):
 ai = AI()
 
 B = np.zeros((BOARD_SIZE, BOARD_SIZE))
-B[7][7] = ME
-B[7][9] = ME
-B[6][7] = OTHER
+B[7][7] = OTHER
+B[7][6] = ME
+B[8][9] = OTHER
 
-ai.boardScore.boardScoreInitialization(B, 1)
+ai.boardScore.boardScoreInitialization(B, OTHER)
 ai.board = B
 # ai.boardScore.debugPrintAll()
-ai.ban = ME
-AIFirst = False
+ai.ban = OTHER
+AIFirst = True
 ai.hand = 1
 
 p = False
@@ -45,7 +45,7 @@ while True:
     debugprintboard(ai.board)
     row = input("Please input #row:")
     if row == "print":
-        #ai.boardScore.debugPrintAll()
+        ai.boardScore.debugPrintAll()
         p = True
         debugprintboard(ai.board)
         row = input("Please input #row:")
@@ -56,7 +56,7 @@ while True:
     ai.board[row][col] = OTHER
     ai.boardScore.boardScoreUpdate(OTHER, [row, col])
     if p:
-        # ai.boardScore.debugPrintAll()
+        ai.boardScore.debugPrintAll()
         p = False
     debugprintboard(ai.board)
     t0 = time.time()
